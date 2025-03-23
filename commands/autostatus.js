@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const isOwner = require('../helpers/isOwner');
+const isAdmin = require('../helpers/isAdmin');
 
 const channelInfo = {
     contextInfo: {
@@ -24,10 +24,10 @@ if (!fs.existsSync(configPath)) {
 
 async function autoStatusCommand(sock, chatId, senderId, args) {
     try {
-        // Check if sender is owner
-        if (!isOwner(senderId)) {
+        // Check if sender is an admin
+        if (!isAdmin(senderId)) {
             await sock.sendMessage(chatId, { 
-                text: '❌ This command can only be used by the owner!',
+                text: '❌ This command can only be used by an admin!',
                 ...channelInfo
             });
             return;
@@ -164,5 +164,6 @@ async function handleStatusUpdate(sock, status) {
 
 module.exports = {
     autoStatusCommand,
+    isAutoStatusEnabled,
     handleStatusUpdate
-}; 
+};
